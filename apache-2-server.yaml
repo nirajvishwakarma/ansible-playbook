@@ -1,0 +1,41 @@
+---
+- name: installing apache2 on server1
+  hosts: server1
+  become: yes
+  tasks:
+    - name: install apache2
+      apt: 
+        name: apache2 
+        state: latest
+
+    - name: index.html
+      copy:
+        content: " This playbook is working Fine for server1"
+        dest: /var/www/html/index.html
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes 
+
+- name: installing apache2 on server2
+  hosts: server2
+  become: yes
+  tasks:
+    - name: install apache2
+      apt:
+        name: apache2
+        state: latest
+
+    - name: index.html
+      copy:
+        content: " This playbook is working Fine for server2"
+        dest: /var/www/html/index.html
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+
