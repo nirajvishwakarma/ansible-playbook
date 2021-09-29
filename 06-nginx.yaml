@@ -1,0 +1,16 @@
+-
+  hosts: server3
+  become: yes
+  tasks:
+    - name: ensure nginx is at the latest version
+      apt: 
+        name: nginx
+        state: latest
+    - name: index.html
+      copy:
+        content: " This playbook for nginx is working Fine"
+        dest: /var/www/html/index.html
+    - name: start nginx
+      service:
+        name: nginx
+        state: started
