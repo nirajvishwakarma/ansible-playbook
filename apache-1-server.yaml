@@ -1,0 +1,19 @@
+-
+  hosts: all
+  become: yes
+  tasks:
+    - name: install apache2
+      apt: 
+        name: apache2 
+        state: latest
+
+    - name: index.html
+      copy:
+        content: " This playbook is working Fine"
+        dest: /var/www/html/index.html
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes 
