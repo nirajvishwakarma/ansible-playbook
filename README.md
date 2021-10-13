@@ -81,15 +81,6 @@ $ cat id_rsa.pub
 -> now try to ssh target1 or target2
 $ shh ubuntu@<target_IP>
 
-
-
-
-
-
-
-
-
-
 #6.Setting Up Ansible host and testing connection
 
 Inventory file
@@ -118,7 +109,7 @@ $ ansible -m ping production
 
 Sample Playbook
 
-Sample playbook to ping the targets
+1. Sample playbook to ping the targets
 
 $ mkdir ansible-demo
 $ cd ansible-demo
@@ -134,34 +125,8 @@ $ vim playbook-pingtest.yaml
     
 $ ansible-playbook playbook-pingtest.yaml
 
-
-
-1.Playbook to insall Apache2
-
-$ vim apache2.yaml
-
--
-  hosts: all
-  tasks:
-    - name: install apache2
-      apt: name=apache2 state=latest
-      become: yes
- 
-The above playbook will work but its not a Good Practice
- 
--
-  hosts: all
-  tasks:
-    - name: install apache2
-      apt:
-        name: apache2
-        state: latest
-      become: yes
-The above playbook is good practice
-    Run the playbook
-    $ ansible-playbook apache2.yaml -i inventary.txt
-
 2. Install apache2 with contents
+# apache2.yaml
 -
   hosts: all
   tasks:
@@ -181,71 +146,9 @@ The above playbook is good practice
            state: restarted
            enabled: yes
        become: yes
- 
-Since the root permission is required at every task so instead of writing for each single task we can write globally
--
-  hosts: all
-  become: yes
-  tasks:
-     - name: install apache2
-       apt:
-           name: apache2
-           state: latest
-     - name: index.html
-       copy:
-           content: " This playbook is working Fine"
-           dest: /var/www/html/index.html
-     - name: restart apache2
-       service:
-           name: apache2
-           state: restarted
-           enabled: yes
- 
+       
+  # inventary.txt
+  [server1]
+  YOUR_SERVER_IP
 
-
-
-2.Ansible playbook to install 2 different things on different server
-
----
-- name: installing apache2 on server1
-  hosts: server1
-  become: yes
-  tasks:
-    - name: install apache2
-      apt:
-        name: apache2
-        state: latest
-
-    - name: index.html
-      copy:
-        content: " This playbook is working Fine for server1"
-        dest: /var/www/html/index.html
-
-    - name: restart apache2
-      service:
-        name: apache2
-        state: restarted
-        enabled: yes
-
-- name: installing apache2 on server2
-  hosts: server2
-  become: yes
-  tasks:
-    - name: install apache2
-      apt:
-        name: apache2
-        state: latest
-
-    - name: index.html
-      copy:
-        content: " This playbook is working Fine for server2"
-        dest: /var/www/html/index.html
-
-    - name: restart apache2
-      service:
-        name: apache2
-        state: restarted
-        enabled: yes
-
-
-
+$ ansible-playbook apache2.yaml -i inventary.txt
