@@ -89,44 +89,44 @@ Sample Playbook
 
 1. Sample playbook to ping the targets
 
-$ mkdir ansible-demo
-$ cd ansible-demo
-$ vim playbook-pingtest.yaml
+    $ mkdir ansible-demo
+    $ cd ansible-demo
+    $ vim playbook-pingtest.yaml
  
--
-  name: Test connectivity to target servers
-  hosts: all
-  tasks:
-    - name: ping test
-      ping:
+   -
+     name: Test connectivity to target servers
+     hosts: all
+     tasks:
+       - name: ping test
+         ping:
  
     
 $ ansible-playbook playbook-pingtest.yaml
 
 2. Install apache2 with contents
-# apache2.yaml
--
-  hosts: all
-  tasks:
-     - name: install apache2
-       apt:
+   apache2.yaml
+   -
+     hosts: all
+     tasks:
+       - name: install apache2
+         apt:
            name: apache2
            state: latest
-       become: yes
-     - name: index.html
-       copy:
+         become: yes
+       - name: index.html
+         copy:
            content: " This playbook is working Fine"
            dest: /var/www/html/index.html
-       become: yes
-     - name: restart apache2
-       service:
+         become: yes
+       - name: restart apache2
+         service:
            name: apache2
            state: restarted
            enabled: yes
-       become: yes
+         become: yes
        
-  # inventary.txt
-  [server1]
-  YOUR_SERVER_IP
+  inventary.txt
+    [server1]
+    YOUR_SERVER_IP
 
 $ ansible-playbook apache2.yaml -i inventary.txt
