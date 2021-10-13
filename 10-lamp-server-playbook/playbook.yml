@@ -47,7 +47,6 @@
     - name: Set root user password
       mysql_user: 
         name: root
-#        host: "{{ item }}"
         password: "{{ mysql_root_password }}"
         check_implicit_admin: yes
         login_user: "{{ app_user }}"
@@ -79,10 +78,6 @@
         login_password: "{{ mysql_root_password }}"
 
   # UFW Configuration
-#    - name: install UFW
-#      apt:
-#        name: ufw
-#        state: present
 
     - name: "UFW - Allow HTTP on port {{ http_port }}"
       ufw:
