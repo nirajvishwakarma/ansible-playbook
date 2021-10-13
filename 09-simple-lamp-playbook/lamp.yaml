@@ -1,0 +1,25 @@
+-
+  hosts: all
+  become: yes
+  tasks:
+    - name: install apache2
+      apt: 
+        name: apache2 
+        state: latest
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+
+
+    - name: install mysql-server
+      apt:
+        name: mysql-server
+        state: latest
+
+    - name: install php
+      apt: 
+        name: php
+        state: latest
