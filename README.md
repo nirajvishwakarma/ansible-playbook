@@ -4,10 +4,9 @@
 
 Ansible
 
-#1. Create 3 server
+#1. Create 2 server
 Ansiblecontroller
-Target1
-Target2
+server1
 
 #2. SHH all server
 sudo ssh -i "mykey.pem" ubuntu@ec2-18-205-155-149.compute-1.amazonaws.com
@@ -15,37 +14,20 @@ sudo ssh -i "mykey.pem" ubuntu@ec2-18-205-155-149.compute-1.amazonaws.com
 #3. Change host and hostname for all 3 server
 ansiblecontroller
 $ sudo vim /etc/hostname
- 
-Ansiblecontroller
+       Ansiblecontroller
  
 $ sudo vim /etc/hosts
- 
-127.0.0.1 localhost ansiblecontroller
-::1       localhost ansiblecontroller
+       127.0.0.1 localhost ansiblecontroller
+       ::1       localhost ansiblecontroller
  
 
-Target1
+server1
 $ sudo vim /etc/hostname
- 
-target2
- 
-$ sudo vim /etc/hosts
- 
-127.0.0.1 localhost target2
-::1           localhost target2
- 
-
-
-target2
-$ sudo vim /etc/hostname
- 
-target2
+       server1
  
 $ sudo vim /etc/hosts
- 
-127.0.0.1 localhost target2
-::1           localhost target2
- 
+       127.0.0.1 localhost target2
+       ::1           localhost target2
 
 #4.Installing Ansible on Master (ubuntu)
 
@@ -66,7 +48,7 @@ $ ansible --version
 
 #5.configure SSH access to ansible host
 
-->Go to ansible controller try to ssh target1 or target2
+->Go to ansible controller try to ssh server1
 $ ssh ubuntu@<target_IP>
 
 -> generate key for the ansible controller 
@@ -87,24 +69,20 @@ Inventory file
 Default inventory file is located at /etc/ansible/hosts
 
 $ sudo vim /etc/ansible/hosts
- 
-[production]
-54.174.249.234
-3.83.115.157
- 
+       [production]
+        SERVER_IP
+        SERVER_IP
  
 
 We can also create own inventory file
 vim inventory.txt
  
-[production]
-54.174.249.234
-3.83.115.157
+      [production]
+      SERVER_IP
+      SERVER_IP
  
-
 $ ansible -m ping all
 $ ansible -m ping production
-
 
 
 Sample Playbook
