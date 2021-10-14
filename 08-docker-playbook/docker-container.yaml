@@ -2,7 +2,7 @@
 - hosts: all
   become: true
   vars:
-    create_containers: 4
+    create_containers: 0
     default_container_name: docker
     default_container_image: nginx
     default_container_command: sleep 1d
@@ -32,6 +32,13 @@
       pip:
         name: docker
 
+#    - name: Give permision to file
+#      file:
+#        path: /var/run/docker.sock
+#        mode: 777
+#        group: root
+#        owner: root
+
     - name: Pull default Docker image
       docker_image:
         name: "{{ default_container_image }}"
@@ -44,3 +51,5 @@
         command: "{{ default_container_command }}"
         state: present
       with_sequence: count={{ create_containers }}
+
+
