@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'curl']
+
+    - name: Install and Enable k3s
+      shell: 'curl -sfL https://get.k3s.io | sh -'
+
+    - name: Give permision to file
+      file:
+        path: /etc/rancher/k3s/k3s.yaml
+        mode: 644
+
+
+#    - name: Remove ~/.kube directory if present
+#      file:
+#        path: ~/.kube
+#        state: absent
+
+#    - name: create ~/.kube directory
+#      file:
+#        path: ~/.kube/
+#        state: directory
+
+#    - name: copy k3.yaml file  from rancher to .kube directory
+#      command: cp -r /etc/rancher/k3s/k3s.yaml ~/.kube/
+
+#    - name: copy k3.yaml file to config directory
+#      command: mv ~/.kube/k3s.yaml ~/.kube/config
+
+#    - name: Give permision to file
+#      file:
+#        path: ~/.kube/config
+#        mode: 644
