@@ -1,0 +1,58 @@
+-
+  hosts: localhost
+  become: yes
+  tasks:
+
+ # Create Database
+     - name: Create Database1
+       shell: psql -U postgres -c 'CREATE DATABASE db_1'
+       ignore_errors: yes 
+     - name: Create Database2
+       shell: psql -U postgres -c 'CREATE DATABASE db_2'
+       ignore_errors: yes
+     - name: Create Database3
+       shell: psql -U postgres -c 'CREATE DATABASE db_3'
+       ignore_errors: yes
+     - name: Create Database4
+       shell: psql -U postgres -c 'CREATE DATABASE db_4'
+       ignore_errors: yes
+
+ # Create Users
+     - name: Create DB_User1
+       shell: psql -U postgres -c "CREATE USER user1 WITH PASSWORD 'user1'"
+       ignore_errors: yes
+
+     - name: Create DB_user2
+       shell: psql -U postgres -c "CREATE USER user2 WITH PASSWORD 'user2'"
+       ignore_errors: yes
+
+# Add script to db
+
+     - name: "Run Command through .sql file"
+       become: true
+       become_user: postgres
+       shell: psql db_2 < /tmp/dump.sql
+       register: command_output
+
+     - debug:
+          var: command_output.stderr_lines
+
+
+
+     - name: "RUN command through .sql file"
+       shell: psql -U postgres -c "\i /tmp/dump.sql"
+       register: command_output
+
+     - debug:
+          var: command_output.stderr_lines
+
+
+
+#Grant DB USERS TO ACCESS DB
+     
+     - name: Grant all privilages access of db_1 to user1
+       shell: psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE db_1 TO user1"
+
+     - name: Grant all privilages access of db_2 to user2
+       shell: psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE db_2 TO user2"
+
